@@ -1,3 +1,5 @@
+sudo -u postgres psql
+
 CREATE DATABASE helping;
 
 \c helping;
