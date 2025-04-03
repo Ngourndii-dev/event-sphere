@@ -1,11 +1,7 @@
 import React from 'react'
 
-export default function Contact() {
-    return (
-        
-        <>
-            <h1>Contact</h1>
-            form pour les reviews 
-        </>
-    )
+export default function contact() {
+  return (
+    <div>contact</div>
+  )
 }

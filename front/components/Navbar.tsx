@@ -1,128 +1,74 @@
-import React from "react";
-import {
-  Navbar as MTNavbar,
-  Collapse,
-  Button,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import {
-  RectangleStackIcon,
-  UserCircleIcon,
-  CommandLineIcon,
-  XMarkIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/solid";
+import React, { useState } from 'react';
+import { Menu, X, Home, Newspaper, Mail, Calendar } from 'lucide-react';
+import Link from 'next/link';
 
-const NAV_MENU = [
-  {
-    name: "Page",
-    icon: RectangleStackIcon,
-  },
-  {
-    name: "Account",
-    icon: UserCircleIcon,
-  },
-  {
-    name: "Docs",
-    icon: CommandLineIcon,
-    href: "https://www.material-tailwind.com/docs/react/installation",
-  },
-];
+const Navbar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-interface NavItemProps {
-  children: React.ReactNode;
-  href?: string;
-}
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-function NavItem({ children, href }: NavItemProps) {
-  return (
-    <li>
-      <Typography
-        as="a"
-        href={href || "#"}
-        target={href ? "_blank" : "_self"}
-        variant="paragraph"
-        color="gray"
-        className="flex items-center gap-2 font-medium text-gray-900"
-      >
-        {children}
-      </Typography>
-    </li>
-  );
-}
-
-export function Navbar() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => setOpen((cur) => !cur);
-
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpen(false)
-    );
-  }, []);
+  const navItems = [
+    { name: 'About', href: '/about', icon: <Home size={20} /> },
+    { name: 'Actus', href: '/actus', icon: <Newspaper size={20} /> },
+    { name: 'Contact', href: '/contact', icon: <Mail size={20} /> },
+    { name: 'Events', href: '/event', icon: <Calendar size={20} /> },
+  ];
 
   return (
-    <MTNavbar shadow={false} fullWidth className="border-0 sticky top-0 z-50">
-      <div className="container mx-auto flex items-center justify-between">
-        <Typography
-          as="a"
-          href="https://www.material-tailwind.com"
-          target="_blank"
-          color="blue-gray"
-          className="text-lg font-bold"
-        >
-          Material Tailwind
-        </Typography>
-        <ul className="ml-10 hidden items-center gap-8 lg:flex">
-          {NAV_MENU.map(({ name, icon: Icon, href }) => (
-            <NavItem key={name} href={href}>
-              <Icon className="h-5 w-5" />
-              {name}
-            </NavItem>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-700 transition-all duration-300">
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <span className="text-2xl font-bold text-black dark:text-white bg-gradient-to-r from-green-500 to-black dark:from-green-400 dark:to-white bg-clip-text text-transparent">
+            Wehewe
+          </span>
+        </Link>
+
+        {/* Menu Desktop */}
+        <div className="hidden md:flex space-x-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="flex items-center space-x-2 text-black dark:text-white hover:text-green-500 dark:hover:text-green-400 transition-colors duration-300 group"
+            >
+              <span className="group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
+              <span className="font-medium">{item.name}</span>
+            </Link>
           ))}
-        </ul>
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="text">Sign In</Button>
-          <a href="https://www.material-tailwind.com/blocks" target="_blank">
-            <Button color="gray">blocks</Button>
-          </a>
         </div>
-        <IconButton
-          variant="text"
-          color="gray"
-          onClick={handleOpen}
-          className="ml-auto inline-block lg:hidden"
+
+        {/* Bouton Menu Mobile */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden p-2 rounded-full bg-green-500 text-white hover:bg-green-600 transition-all duration-300"
         >
-          {open ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
-        </IconButton>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
-      <Collapse open={open}>
-        <div className="container mx-auto mt-3 border-t border-gray-200 px-2 pt-4">
-          <ul className="flex flex-col gap-4">
-            {NAV_MENU.map(({ name, icon: Icon }) => (
-              <NavItem key={name}>
-                <Icon className="h-5 w-5" />
-                {name}
-              </NavItem>
-            ))}
-          </ul>
-          <div className="mt-6 mb-4 flex items-center gap-2">
-            <Button variant="text">Sign In</Button>
-            <a href="https://www.material-tailwind.com/blocks" target="_blank">
-              <Button color="gray">blocks</Button>
-            </a>
-          </div>
+
+      {/* Menu Mobile */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="flex flex-col items-center space-y-6 py-6 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              onClick={toggleMenu}
+              className="flex items-center space-x-3 text-black dark:text-white hover:text-green-500 dark:hover:text-green-400 transition-colors duration-300 animate-fade-in"
+            >
+              <span className="text-green-500">{item.icon}</span>
+              <span className="text-lg font-medium">{item.name}</span>
+            </Link>
+          ))}
         </div>
-      </Collapse>
-    </MTNavbar>
+      </div>
+    </nav>
   );
-}
+};
 
 export default Navbar;

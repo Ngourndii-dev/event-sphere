@@ -80,8 +80,8 @@ export default function Home() {
       <div className="grid gap-6 w-full max-w-5xl mb-12 lg:grid-cols-4">
         {[
           { href: "/about", title: "About", desc: "Discover who we are and what drives us" },
-          { href: "/service", title: "Service", desc: "Explore our community support services" },
-          { href: "/events", title: "Events", desc: "Join our exciting upcoming events" },
+          { href: "/actus", title: "Actus", desc: "Explore our community support services" },
+          { href: "/event", title: "Events", desc: "Join our exciting upcoming events" },
           { href: "/contact", title: "Contact", desc: "Reach out with questions or ideas" },
         ].map((item, index) => {
           const Icon = icons[index];
