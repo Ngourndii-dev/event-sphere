@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Menu, X, Home, Newspaper, Mail, Calendar, Sun, Moon, Rocket, Users, Handshake, ArrowRight, CheckCircle, SparklesIcon, LightbulbIcon, MessageSquare } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Menu, X, Home, Newspaper, Mail, Calendar, Sun, Moon, Rocket, Users, Handshake, ArrowRight, CheckCircle, LightbulbIcon, MessageSquare } from 'lucide-react';
 import { Facebook, Twitter, Instagram, Linkedin, Phone, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import Separator from './Separator';
+import ClientModal from './ClientModal';
+import EventModal from './EventModal';
 
-const Navbar: React.FC<{ darkMode: boolean; toggleDarkMode: () => void }> = ({ darkMode, toggleDarkMode }) => {
+
+const Navbar = ({ darkMode, toggleDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -84,8 +86,14 @@ const Navbar: React.FC<{ darkMode: boolean; toggleDarkMode: () => void }> = ({ d
 export default function Intro() {
   const [darkMode, setDarkMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
+  const openClientModal = () => setIsClientModalOpen(true);
+  const closeClientModal = () => setIsClientModalOpen(false);
+  const openEventModal = () => setIsEventModalOpen(true);
+  const closeEventModal = () => setIsEventModalOpen(false);
 
   const features = [
     {
@@ -129,14 +137,46 @@ export default function Intro() {
               La plateforme ultime pour publier vos événements et trouver l'aide nécessaire pour les réaliser.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-              <button className={`px-6 py-3 rounded-lg font-medium flex items-center justify-center space-x-2 transition-all duration-300 ${darkMode ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'} shadow-lg hover:shadow-xl`}>
-                <span>Commencer maintenant</span>
-                <ArrowRight className="w-5 h-5" />
+              <button 
+                onClick={openClientModal} 
+                className={`group relative px-6 py-3 rounded-lg font-medium flex items-center justify-center space-x-2 transition-all duration-300 ${
+                  darkMode 
+                    ? 'bg-green-600 text-white hover:bg-green-700' 
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                } shadow-lg hover:shadow-xl transform hover:-translate-y-1`}
+              >
+                <span className="relative z-10">
+                  <abbr 
+                    title="Subscribe to client" 
+                    className="no-underline"
+                  >
+                    Commencer maintenant
+                  </abbr>
+                </span>
+                <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                <span className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-700 opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />
               </button>
-              <button className={`px-6 py-3 rounded-lg font-medium flex items-center justify-center space-x-2 transition-all duration-300 ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}>
-                <span><a href="/event">Voir les événements</a></span>
-              </button>
-            </div>
+
+  <button 
+    onClick={openEventModal} 
+    className={`group relative px-6 py-3 rounded-lg font-medium flex items-center justify-center space-x-2 transition-all duration-300 ${
+      darkMode 
+        ? 'bg-gray-700 text-white hover:bg-gray-600' 
+        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+    } shadow-md hover:shadow-lg transform hover:-translate-y-1`}
+  >
+    <span className="relative z-10">
+      <abbr 
+        title="propose event" 
+        className="no-underline"
+      >
+        agir pour les événements
+      </abbr>
+    </span>
+    <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+    <span className="absolute inset-0 bg-gradient-to-r from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-500 opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />
+  </button>
+</div>
           </div>
 
           <div className="relative max-w-4xl mx-auto h-64 bg-gradient-to-r from-green-500 to-green-700 rounded-xl overflow-hidden shadow-2xl mb-16">
@@ -220,7 +260,7 @@ export default function Intro() {
           </div>
         </div>
       </section>
-      <Separator />
+
       <footer className="bg-gray-900 text-white pt-12 pb-6">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -300,6 +340,9 @@ export default function Intro() {
           </div>
         </div>
       </footer>
+
+      <ClientModal isOpen={isClientModalOpen} onClose={closeClientModal} />
+      <EventModal isOpen={isEventModalOpen} onClose={closeEventModal} />
 
       <style jsx global>{`
         @keyframes pulse-slow {
