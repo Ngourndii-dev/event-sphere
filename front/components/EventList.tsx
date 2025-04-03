@@ -2,9 +2,93 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
   Sun, Moon, Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, 
-  ChevronDown, ChevronUp, Send, User, Clock, Users, Handshake, Search, Filter, X
+  ChevronDown, ChevronUp, Send, User, Clock, Users, Handshake, Search, Filter, X,
+  Menu, Home, Newspaper, Mail, Calendar
 } from 'lucide-react';
-import { Collaborator, Comment, Partner ,Event} from '@/lib/types';
+import { Collaborator, Comment, Partner, Event } from '@/lib/types';
+import Link from 'next/link';
+import Separator from './Separator';
+
+const Navbar: React.FC<{ darkMode: boolean; toggleDarkMode: () => void }> = ({ darkMode, toggleDarkMode }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  const navItems = [
+    { name: 'About', href: '/about', icon: <Home size={20} /> },
+    { name: 'Actus', href: '/actus', icon: <Newspaper size={20} /> },
+    { name: 'Contact', href: '/contact', icon: <Mail size={20} /> },
+    { name: 'Events', href: '/event', icon: <Calendar size={20} /> },
+  ];
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-50 ${darkMode ? 'bg-gray-900/90' : 'bg-white/90'} backdrop-blur-md shadow-lg border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} transition-all duration-300`}>
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="flex items-center space-x-2">
+          <span className="text-2xl font-bold bg-gradient-to-r from-green-500 to-black dark:from-green-400 dark:to-white bg-clip-text text-transparent">
+            Wehewe
+          </span>
+        </Link>
+
+        <div className="hidden md:flex space-x-8 items-center">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex items-center space-x-2 ${darkMode ? 'text-white' : 'text-black'} hover:text-green-500 dark:hover:text-green-400 transition-colors duration-300 group`}
+            >
+              <span className="group-hover:scale-110 transition-transform duration-300">{item.icon}</span>
+              <span className="font-medium">{item.name}</span>
+            </Link>
+          ))}
+          <button
+            onClick={toggleDarkMode}
+            className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-200 text-gray-700'}`}
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+        </div>
+
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={toggleDarkMode}
+            className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-200 text-gray-700'}`}
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+          <button
+            onClick={toggleMenu}
+            className="p-2 rounded-full bg-green-500 text-white hover:bg-green-600 transition-all duration-300"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className={`flex flex-col items-center space-y-6 py-6 ${darkMode ? 'bg-gray-900/95 border-gray-700' : 'bg-white/95 border-gray-200'} backdrop-blur-md border-t`}>
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              onClick={toggleMenu}
+              className={`flex items-center space-x-3 ${darkMode ? 'text-white' : 'text-black'} hover:text-green-500 dark:hover:text-green-400 transition-colors duration-300 animate-fade-in`}
+            >
+              <span className="text-green-500">{item.icon}</span>
+              <span className="text-lg font-medium">{item.name}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
 
 const EventList: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -115,7 +199,7 @@ const EventList: React.FC = () => {
       fetchPartners(eventId);
     }
   };
-
+  
   const handlePostComment = async (eventId: number) => {
     if (!newComment.trim()) return;
 
@@ -123,7 +207,7 @@ const EventList: React.FC = () => {
       const response = await axios.post('http://localhost:3001/api/event_comments', {
         event_id: eventId,
         content: newComment,
-      });
+      }); 
       const newCommentWithAvatar = {
         ...response.data,
         avatar: 'https://i.pravatar.cc/150?u=newcomment',
@@ -170,22 +254,9 @@ const EventList: React.FC = () => {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <header className={`sticky top-0 z-10 border-b ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-black bg-clip-text text-transparent">
-            SocialEvents
-          </h1>
-          <button
-            onClick={toggleDarkMode}
-            className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-200 text-gray-700'}`}
-            aria-label="Toggle dark mode"
-          >
-            {darkMode ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
-        </div>
-      </header>
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-      <main className="container mx-auto p-4">
+      <main className="container mx-auto p-4 pt-24">
         <div className={`mb-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} p-4 rounded-lg shadow-md`}>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
@@ -222,7 +293,6 @@ const EventList: React.FC = () => {
             </div>
           </div>
           
-          {/* Filters Dropdown */}
           {showFilters && (
             <div className={`mt-4 p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
               <h3 className="font-semibold mb-3">Filtrer par :</h3>
@@ -276,7 +346,6 @@ const EventList: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Event Image */}
                   <div className="relative group">
                     <img 
                       src={event.image} 
@@ -290,7 +359,6 @@ const EventList: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Event Content */}
                   <div className="p-4">
                     <div className="flex justify-between items-start">
                       <div>
@@ -304,7 +372,6 @@ const EventList: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Event Actions */}
                     <div className="mt-3 flex justify-between items-center">
                       <div className="flex space-x-3">
                         <button className={`flex items-center space-x-1 ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}>
@@ -326,10 +393,8 @@ const EventList: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Event Details (expanded) */}
                   {selectedEventId === event.id && (
                     <div className={`px-4 pb-4 animate-fadeIn ${darkMode ? 'bg-gray-750' : 'bg-gray-50'}`}>
-                      {/* Comments Section */}
                       <div className="mb-4">
                         <div 
                           className="flex items-center justify-between cursor-pointer py-2"
@@ -400,7 +465,6 @@ const EventList: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Collaborators Section */}
                       <div className="mb-4">
                         <div 
                           className="flex items-center justify-between cursor-pointer py-2"
@@ -439,7 +503,6 @@ const EventList: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Partners Section */}
                       <div>
                         <div 
                           className="flex items-center justify-between cursor-pointer py-2"
@@ -510,8 +573,8 @@ const EventList: React.FC = () => {
             )}
           </>
         )}
+         <Separator />
       </main>
-
       <style jsx global>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }

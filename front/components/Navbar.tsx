@@ -17,14 +17,12 @@ const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-700 transition-all duration-300">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold text-black dark:text-white bg-gradient-to-r from-green-500 to-black dark:from-green-400 dark:to-white bg-clip-text text-transparent">
             Wehewe
           </span>
         </Link>
 
-        {/* Menu Desktop */}
         <div className="hidden md:flex space-x-8">
           {navItems.map((item) => (
             <Link
@@ -38,7 +36,6 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Bouton Menu Mobile */}
         <button
           onClick={toggleMenu}
           className="md:hidden p-2 rounded-full bg-green-500 text-white hover:bg-green-600 transition-all duration-300"
@@ -47,7 +44,6 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Menu Mobile */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
