@@ -23,6 +23,7 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+// Routes pour les tables de base
 const tables = ['currencies', 'users', 'clients', 'event_categories', 'events', 
   'event_collaborators', 'event_comments', 'event_partners'];
 
@@ -38,25 +39,77 @@ tables.forEach(table => {
   });
 });
 
-tables.forEach(table => {
-  app.post(`/api/${table}`, async (req, res) => {
-    try {
-      const columns = Object.keys(req.body).join(', ');
-      const values = Object.values(req.body);
-      const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
-      
-      const result = await pool.query(
-        `INSERT INTO ${table} (${columns}) VALUES (${placeholders}) RETURNING *`,
-        values
-      );
-      res.status(201).json(result.rows[0]);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+// Route POST pour les événements
+app.post('/api/events', async (req, res) => {
+  try {
+    const { 
+      title, 
+      description, 
+      category_id, 
+      start_date, 
+      end_date, 
+      location, 
+      status = 'draft', 
+      budget = null, 
+      currency_id = 1, 
+      created_by = 1 
+    } = req.body;
+
+    if (!title || !description || !category_id || !start_date || !end_date || !location) {
+      return res.status(400).json({ error: 'Tous les champs obligatoires doivent être remplis' });
     }
-  });
+
+    const result = await pool.query(
+      `INSERT INTO events 
+       (title, description, category_id, start_date, end_date, location, status, budget, currency_id, created_by) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+       RETURNING *`,
+      [title, description, category_id, start_date, end_date, location, status, budget, currency_id, created_by]
+    );
+    
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erreur détaillée:', error);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      details: error.message 
+    });
+  }
 });
 
+// Nouvelle route POST pour les clients
+app.post('/api/clients', async (req, res) => {
+  try {
+    const { 
+      full_name, 
+      email, 
+      cin, 
+      occupation 
+    } = req.body;
+
+    if (!full_name || !cin) {
+      return res.status(400).json({ error: 'Le nom complet et le CIN sont obligatoires' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO clients 
+       (full_name, email, cin, occupation) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING *`,
+      [full_name, email, cin, occupation]
+    );
+    
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Erreur détaillée:', error);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      details: error.message 
+    });
+  }
+});
+
+// Autres routes existantes
 app.get('/api/event_collaborators/event/:eventId', async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -112,7 +165,7 @@ app.get('/api/event_comments/event/:eventId', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "error" });
   }
 });
 
