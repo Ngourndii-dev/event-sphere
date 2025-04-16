@@ -1,0 +1,628 @@
+swagger: '2.0'
+info:
+  title: Helping Event Management API
+  description: API for managing events and collaborations
+  version: 1.0.0
+host: localhost:3001
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: Currencies
+  - name: Users
+  - name: Clients
+  - name: Events
+  - name: Event Categories
+  - name: Collaborations
+  - name: Comments
+  - name: Partners
+
+paths:
+  /currencies:
+    get:
+      tags: [Currencies]
+      summary: Get all available currencies
+      description: Retrieve a complete list of all supported currencies in the system
+      responses:
+        200:
+          description: Successful operation - Returns currency list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Currency'
+
+  /currencies/{id}:
+    get:
+      tags: [Currencies]
+      summary: Get currency details by ID
+      description: Retrieve detailed information about a specific currency
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the currency to retrieve
+      responses:
+        200:
+          description: Successful operation - Returns currency details
+          schema:
+            $ref: '#/definitions/Currency'
+        404:
+          description: Currency not found - The specified currency ID doesn't exist
+
+  /users:
+    get:
+      tags: [Users]
+      summary: Get all system users
+      description: Retrieve a list of all registered users in the system
+      responses:
+        200:
+          description: Successful operation - Returns user list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user profile by ID
+      description: Retrieve complete profile information for a specific user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the user to retrieve
+      responses:
+        200:
+          description: Successful operation - Returns user details
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: User not found - The specified user ID doesn't exist
+
+  /users/{id}/username:
+    get:
+      tags: [Users]
+      summary: Get username by user ID
+      description: Retrieve only the username for a specific user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the user
+      responses:
+        200:
+          description: Successful operation - Returns username
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+
+  /clients:
+    get:
+      tags: [Clients]
+      summary: Get all registered clients
+      description: Retrieve a complete list of all clients in the system
+      responses:
+        200:
+          description: Successful operation - Returns client list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Client'
+    post:
+      tags: [Clients]
+      summary: Register a new client
+      description: Create a new client record in the system
+      parameters:
+        - in: body
+          name: client
+          description: Client registration data
+          schema:
+            $ref: '#/definitions/ClientInput'
+      responses:
+        201:
+          description: Client successfully created - Returns created client data
+          schema:
+            $ref: '#/definitions/Client'
+        400:
+          description: Bad request - Missing required fields or invalid data
+
+  /clients/{id}/fullname:
+    get:
+      tags: [Clients]
+      summary: Get client's full name by ID
+      description: Retrieve only the full name of a specific client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the client
+      responses:
+        200:
+          description: Successful operation - Returns client's full name
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+
+  /event_categories:
+    get:
+      tags: [Event Categories]
+      summary: Get all event categories
+      description: Retrieve a complete list of available event categories
+      responses:
+        200:
+          description: Successful operation - Returns category list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventCategory'
+
+  /event_categories/{id}:
+    get:
+      tags: [Event Categories]
+      summary: Get event category details by ID
+      description: Retrieve detailed information about a specific event category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the category to retrieve
+      responses:
+        200:
+          description: Successful operation - Returns category details
+          schema:
+            $ref: '#/definitions/EventCategory'
+        404:
+          description: Category not found - The specified category ID doesn't exist
+
+  /events:
+    get:
+      tags: [Events]
+      summary: Get all events
+      description: Retrieve a complete list of all events in the system
+      responses:
+        200:
+          description: Successful operation - Returns event list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Event'
+    post:
+      tags: [Events]
+      summary: Create a new event
+      description: Register a new event in the system
+      parameters:
+        - in: body
+          name: event
+          description: Event registration data
+          schema:
+            $ref: '#/definitions/EventInput'
+      responses:
+        201:
+          description: Event successfully created - Returns created event data
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+          description: Bad request - Missing required fields or invalid data
+
+  /events/{id}:
+    get:
+      tags: [Events]
+      summary: Get event details by ID
+      description: Retrieve complete information about a specific event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the event to retrieve
+      responses:
+        200:
+          description: Successful operation - Returns event details
+          schema:
+            $ref: '#/definitions/Event'
+        404:
+          description: Event not found - The specified event ID doesn't exist
+
+  /event_collaborators:
+    get:
+      tags: [Collaborations]
+      summary: Get all event collaborations
+      description: Retrieve a complete list of all event collaborations in the system
+      responses:
+        200:
+          description: Successful operation - Returns collaboration list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventCollaborator'
+
+  /event_collaborators/event/{eventId}:
+    get:
+      tags: [Collaborations]
+      summary: Get collaborators for a specific event
+      description: Retrieve all collaborators associated with a particular event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the event
+      responses:
+        200:
+          description: Successful operation - Returns collaborator list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventCollaborator'
+
+  /event_comments:
+    get:
+      tags: [Comments]
+      summary: Get all event comments
+      description: Retrieve a complete list of all event comments in the system
+      responses:
+        200:
+          description: Successful operation - Returns comment list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventComment'
+
+  /event_comments/event/{eventId}:
+    get:
+      tags: [Comments]
+      summary: Get comments for a specific event
+      description: Retrieve all comments associated with a particular event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the event
+      responses:
+        200:
+          description: Successful operation - Returns comment list with user details
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventCommentWithUser'
+
+  /event_comments/{id}:
+    get:
+      tags: [Comments]
+      summary: Get specific comment by ID
+      description: Retrieve detailed information about a specific event comment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the comment to retrieve
+      responses:
+        200:
+          description: Successful operation - Returns comment details with user info
+          schema:
+            $ref: '#/definitions/EventCommentWithUser'
+        404:
+          description: Comment not found - The specified comment ID doesn't exist
+
+  /event_partners:
+    get:
+      tags: [Partners]
+      summary: Get all event partners
+      description: Retrieve a complete list of all event partners in the system
+      responses:
+        200:
+          description: Successful operation - Returns partner list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventPartner'
+
+  /event_partners/event/{eventId}:
+    get:
+      tags: [Partners]
+      summary: Get partners for a specific event
+      description: Retrieve all partners associated with a particular event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          type: integer
+          description: Numeric ID of the event
+      responses:
+        200:
+          description: Successful operation - Returns partner list with client details
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventPartnerWithClient'
+
+definitions:
+  Currency:
+    type: object
+    properties:
+      id:
+        type: integer
+      code:
+        type: string
+        maxLength: 3
+      name:
+        type: string
+        maxLength: 50
+      symbol:
+        type: string
+        maxLength: 5
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      full_name:
+        type: string
+        maxLength: 100
+      username:
+        type: string
+        maxLength: 50
+      email:
+        type: string
+        maxLength: 255
+      password_hash:
+        type: string
+        maxLength: 255
+      birthdate:
+        type: string
+        format: date
+      cin:
+        type: string
+        maxLength: 20
+      role:
+        type: string
+        enum: ['manager', 'partner', 'admin']
+      is_active:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  Client:
+    type: object
+    properties:
+      id:
+        type: integer
+      full_name:
+        type: string
+        maxLength: 100
+      email:
+        type: string
+        maxLength: 255
+      cin:
+        type: string
+        maxLength: 20
+      occupation:
+        type: string
+        maxLength: 100
+      created_at:
+        type: string
+        format: date-time
+
+  ClientInput:
+    type: object
+    required:
+      - full_name
+      - cin
+    properties:
+      full_name:
+        type: string
+        maxLength: 100
+      email:
+        type: string
+        maxLength: 255
+      cin:
+        type: string
+        maxLength: 20
+      occupation:
+        type: string
+        maxLength: 100
+
+  EventCategory:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        maxLength: 50
+      description:
+        type: string
+
+  Event:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+        maxLength: 100
+      description:
+        type: string
+      category_id:
+        type: integer
+      start_date:
+        type: string
+        format: date-time
+      end_date:
+        type: string
+        format: date-time
+      location:
+        type: string
+        maxLength: 255
+      status:
+        type: string
+        enum: ['draft', 'published', 'ongoing', 'completed', 'cancelled']
+      budget:
+        type: number
+        format: double
+      currency_id:
+        type: integer
+      created_by:
+        type: integer
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  EventInput:
+    type: object
+    required:
+      - title
+      - description
+      - category_id
+      - start_date
+      - end_date
+      - location
+    properties:
+      title:
+        type: string
+        maxLength: 100
+      description:
+        type: string
+      category_id:
+        type: integer
+      start_date:
+        type: string
+        format: date-time
+      end_date:
+        type: string
+        format: date-time
+      location:
+        type: string
+        maxLength: 255
+      status:
+        type: string
+        enum: ['draft', 'published', 'ongoing', 'completed', 'cancelled']
+        default: 'draft'
+      budget:
+        type: number
+        format: double
+        default: null
+      currency_id:
+        type: integer
+        default: 1
+      created_by:
+        type: integer
+        default: 1
+
+  EventCollaborator:
+    type: object
+    properties:
+      id:
+        type: integer
+      event_id:
+        type: integer
+      user_id:
+        type: integer
+      role:
+        type: string
+        enum: ['organizer', 'partner', 'volunteer']
+      status:
+        type: string
+        enum: ['pending', 'accepted', 'rejected']
+      joined_at:
+        type: string
+        format: date-time
+
+  EventComment:
+    type: object
+    properties:
+      id:
+        type: integer
+      event_id:
+        type: integer
+      client_id:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+
+  EventCommentWithUser:
+    type: object
+    properties:
+      id:
+        type: integer
+      event_id:
+        type: integer
+      client_id:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      username:
+        type: string
+      role:
+        type: string
+
+  EventPartner:
+    type: object
+    properties:
+      id:
+        type: integer
+      event_id:
+        type: integer
+      client_id:
+        type: integer
+      description:
+        type: string
+      offered_help:
+        type: string
+      status:
+        type: string
+        enum: ['pending', 'approved', 'rejected']
+      created_at:
+        type: string
+        format: date-time
+
+  EventPartnerWithClient:
+    type: object
+    properties:
+      id:
+        type: integer
+      event_id:
+        type: integer
+      client_id:
+        type: integer
+      description:
+        type: string
+      offered_help:
+        type: string
+      status:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      full_name:
+        type: string
