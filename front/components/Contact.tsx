@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { EnvelopeIcon, UserIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import Separator from './Separator';
+import Footer from './Footer';
 
 const useThemeStore = create((set) => ({
   isDark: false,
@@ -31,7 +32,7 @@ const Navbar = () => {
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold text-black dark:text-white bg-gradient-to-r from-green-500 to-black dark:from-green-400 dark:to-white bg-clip-text text-transparent">
-            Wehewe
+            EventSphere
           </span>
         </Link>
         <div className="hidden md:flex space-x-8">
@@ -102,6 +103,7 @@ export default function Contact() {
         </div>
       </div>
        <Separator />
+        <Footer/>
     </div>
   );
 }

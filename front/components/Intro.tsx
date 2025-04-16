@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, Home, Newspaper, Mail, Calendar, Sun, Moon, Rocket, Users, Handshake, ArrowRight, CheckCircle, LightbulbIcon, MessageSquare } from 'lucide-react';
-import { Facebook, Twitter, Instagram, Linkedin, Phone, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import ClientModal from './ClientModal';
 import EventModal from './EventModal';
+import Footer from './Footer';
 
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
@@ -98,27 +98,26 @@ export default function Intro() {
   const features = [
     {
       icon: <Rocket className="w-8 h-8" />,
-      title: "Publiez facilement",
-      description: "Créez et partagez vos événements en quelques clics seulement."
+      title: "Publish Easily",
+      description: "Create and share your events in just a few clicks."
     },
     {
       icon: <Users className="w-8 h-8" />,
-      title: "Trouvez des participants",
-      description: "Connectez-vous avec des personnes partageant les mêmes centres d'intérêt."
+      title: "Find Participants",
+      description: "Connect with people who share the same interests."
     },
     {
       icon: <Handshake className="w-8 h-8" />,
-      title: "Obtenez de l'aide",
-      description: "Demandez et offrez de l'aide pour organiser des événements réussis."
+      title: "Get Help",
+      description: "Request and offer help to organize successful events."
     }
   ];
 
   const steps = [
-    "Décrivez votre événement",
-    "Choisissez date et lieu",
-    "Publiez et partagez"
+      "Describe your event",
+      "Choose date and location",
+      "Publish and share"
   ];
-
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -128,13 +127,14 @@ export default function Intro() {
           <div className="max-w-3xl mx-auto">
             <span className={`inline-flex items-center px-4 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800'} mb-4 animate-bounce`}>
               <LightbulbIcon className="w-4 h-4 mr-2" />
-              Nouveau ! Publiez vos événements
+              New! Publish your events
+
             </span>
             <h1 className={`text-4xl md:text-5xl font-extrabold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-              Créez, Partagez, <span className="bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent">Organisez</span>
+            Create, Share,<span className="bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent">Organize</span>
             </h1>
             <p className={`text-xl mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              La plateforme ultime pour publier vos événements et trouver l'aide nécessaire pour les réaliser.
+            The ultimate platform for publishing your events and finding the help you need to make them happen.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
               <button 
@@ -150,7 +150,7 @@ export default function Intro() {
                     title="Subscribe to client" 
                     className="no-underline"
                   >
-                    Commencer maintenant
+                    Start now
                   </abbr>
                 </span>
                 <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
@@ -170,7 +170,7 @@ export default function Intro() {
         title="propose event" 
         className="no-underline"
       >
-        agir pour les événements
+        taking action for events
       </abbr>
     </span>
     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
@@ -191,7 +191,7 @@ export default function Intro() {
 
       <section className={`py-16 px-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Comment ça marche</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">How it works</h2>
           
           <div className="max-w-4xl mx-auto mb-16">
             <div className="flex justify-between relative">
@@ -249,97 +249,18 @@ export default function Intro() {
         <div className="container mx-auto text-center">
           <div className={`max-w-2xl mx-auto p-8 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
             <MessageSquare className={`w-12 h-12 mx-auto mb-4 ${darkMode ? 'text-green-400' : 'text-green-600'}`} />
-            <h2 className="text-2xl font-bold mb-4">Prêt à lancer votre événement ?</h2>
+            <h2 className="text-2xl font-bold mb-4">Ready to launch your event?</h2>
             <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              Rejoignez notre communauté et commencez à créer des expériences inoubliables dès aujourd'hui.
+            Join our community and start creating unforgettable experiences today.
             </p>
             <button className={`px-6 py-3 rounded-lg font-medium ${darkMode ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'} transition-colors duration-300 flex items-center mx-auto space-x-2`}>
-              <span>S'inscrire gratuitement</span>
+              <span>Free registration</span>
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>
       </section>
-
-      <footer className="bg-gray-900 text-white pt-12 pb-6">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-                EventWorld
-              </h2>
-              <p className="text-gray-400">
-                Découvrez les événements les plus passionnants à travers le monde. Nous connectons les passionnés aux expériences inoubliables.
-              </p>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Twitter className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Liens rapides</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Accueil</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Événements</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Catégories</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">À propos</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Catégories</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Musique</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Sport</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Art</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Technologie</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Gastronomie</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Contactez-nous</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start space-x-2">
-                  <MapPin className="w-5 h-5 text-green-400 mt-0.5" />
-                  <span className="text-gray-400">123 Rue des Événements, Paris, France</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Mail className="w-5 h-5 text-green-400" />
-                  <span className="text-gray-400">contact@eventworld.com</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Phone className="w-5 h-5 text-green-400" />
-                  <span className="text-gray-400">+33 1 23 45 67 89</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} EventWorld. Tous droits réservés.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Politique de confidentialité</a>
-              <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Conditions d'utilisation</a>
-              <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Mentions légales</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
 
       <ClientModal isOpen={isClientModalOpen} onClose={closeClientModal} />
       <EventModal isOpen={isEventModalOpen} onClose={closeEventModal} />
