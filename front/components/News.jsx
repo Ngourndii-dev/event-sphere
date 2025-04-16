@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import "../styles/globals.css";
 import { Globe, Calendar, Sun, Moon, Home, Newspaper, Mail, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Separator from '@/components/Separator';

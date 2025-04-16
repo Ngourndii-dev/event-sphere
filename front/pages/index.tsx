@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { Sun, Moon, ArrowRight, Users, Heart, Calendar, Mail } from "lucide-react";
