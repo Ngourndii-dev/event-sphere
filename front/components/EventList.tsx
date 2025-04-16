@@ -24,9 +24,9 @@ const Navbar: React.FC<{ darkMode: boolean; toggleDarkMode: () => void }> = ({ d
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 ${darkMode ? 'bg-gray-900/90' : 'bg-white/90'} backdrop-blur-md shadow-lg border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} transition-all duration-300`}>
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold bg-gradient-to-r from-green-500 to-black dark:from-green-400 dark:to-white bg-clip-text text-transparent">
-            Wehewe
+      <Link href="/" className="flex items-center space-x-2">
+          <span className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-black'} bg-gradient-to-r ${darkMode ? 'from-green-400 to-white' : 'from-green-500 to-black'} bg-clip-text text-transparent`}>
+            EventSphere
           </span>
         </Link>
 

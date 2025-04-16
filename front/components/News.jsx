@@ -80,12 +80,8 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
       aria-label="Main navigation"
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2 group" aria-label="EventSphere Home">
-          <span
-            className={`text-xl font-bold text-transparent bg-clip-text 
-              bg-gradient-to-r ${isDarkMode ? 'from-green-400 to-teal-300' : 'from-green-600 to-teal-500'}
-              transition-all duration-300 group-hover:from-green-500 group-hover:to-teal-400`}
-          >
+      <Link href="/" className="flex items-center space-x-2">
+          <span className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-black'} bg-gradient-to-r ${isDarkMode ? 'from-green-400 to-white' : 'from-green-500 to-black'} bg-clip-text text-transparent`}>
             EventSphere
           </span>
         </Link>
